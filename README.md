@@ -8,3 +8,8 @@ The url from we have to download Kafka -> https://hub.docker.com/r/bitnami/kafka
 
 ### PostgreSQL
 The url from we have to download PostgreSQL -> https://hub.docker.com/_/postgres/
+
+### ElasticSearch
+The url from we have to download ElasticSearch -> https://hub.docker.com/_/elasticsearch
+
+
