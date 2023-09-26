@@ -3,13 +3,41 @@
 
 version: "2"
 
+# Definimos la red en la que se va a ejecutar kafka
+networks:
+  cqrs_network:
+    driver: bridge
+
 services:
+
+# From docker kafka image configuration: 
+
+# Apache Kafka Raft (KRaft) makes use of a new quorum controller service in 
+# Kafka which replaces the previous controller and makes use of an event-based 
+# variant of the Raft consensus protocol. This greatly simplifies Kafka’s 
+# architecture by consolidating responsibility for metadata into Kafka itself, 
+# rather than splitting it between two different systems: ZooKeeper and Kafka.
+
+# Añado la configuración (comentada) para usar zookeeper
+
+  # zookeeper:
+  #   image: docker.io/bitnami/zookeeper:3.9
+  #   ports:
+  #     - "2181:2181"
+  #   volumes:
+  #     - "zookeeper_data:/bitnami"
+  #   environment:
+  #     - ALLOW_ANONYMOUS_LOGIN=yes
+
+
   kafka:
     image: docker.io/bitnami/kafka:3.5
+    networks:
+      - cqrs_network
     ports:
       - "9092:9092"
     volumes:
-      - "kafka_data:/bitnami"
+      - "kafka_data:/data"
     environment:
       # KRaft settings
       - KAFKA_CFG_NODE_ID=0
