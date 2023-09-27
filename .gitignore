@@ -25,3 +25,10 @@ replay_pid*
 
 # visual studio code files and folders
 .vscode/
+/elastic/target
+/elastic/target/maven-archiver
+/elastic/target/maven-archiver/pom.properties
+elastic/target/maven-archiver/pom.properties
+kafka/target/maven-archiver/pom.properties
+postgre/target/maven-archiver/pom.properties
+spark/target/maven-archiver/pom.properties
