@@ -1,0 +1,24 @@
+# creación de la red
+podman network create cqrs-network
+
+podman run -d --name kafka-server --hostname kafka-server --network cqrs-network -e KAFKA_CFG_NODE_ID=0 -e KAFKA_CFG_PROCESS_ROLES=controller,broker -e KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093 -e KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT -e KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-server:9093 -e KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER kafka
+
+# Añado el plugin para conectarme a un fichero desde kafka
+podman run -it --rm --network cqrs-network kafka echo "plugin.path=libs/connect-file-3.5.0.jar" > /opt/bitnami/kafka/config/connect-standalone.properties
+
+
+# creación del topic
+podman run -it --rm --network cqrs-network kafka kafka-topics.sh --create --partitions 2 --topic test --bootstrap-server kafka-server:9092
+
+# mirar la lista de topics
+podman run -it --rm --network cqrs-network kafka kafka-topics.sh --list --bootstrap-server kafka-server:9092
+
+# borrado del topic
+podman run -it --rm --network cqrs-network kafka kafka-topics.sh --delete --topic test --bootstrap-server kafka-server:9092
+
+#Creación de productor
+podman run -it --rm --network cqrs-network kafka kafka-console-producer.sh --producer.config /opt/bitnami/kafka/config/producer.properties --bootstrap-server kafka-server:9092 --topic test
+
+#Creación de consumidor
+
+podman run -it --rm --network cqrs-network kafka kafka-console-consumer.sh --consumer.config /opt/bitnami/kafka/config/consumer.properties --bootstrap-server kafka-server:9092 --topic test --from-beginning

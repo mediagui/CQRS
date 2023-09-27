@@ -6,11 +6,16 @@ This repository is an approach to implement the cqrs pattern with Kafka, Spark, 
 ### Kafka 
 The url from we have to download Kafka -> https://hub.docker.com/r/bitnami/kafka
 
-### Download and run container from image
+### Download and run container from Kafka image
 
+    # Descarga de la imagen
     docker pull bitnami/kafka
 
+    # Construcción del contenedor
+    docker build -t kafka .
     
+    # Ejecución de servidor kafka
+    docker run -d --name=kafka --network=cqrs_network kafka
 
 
 
